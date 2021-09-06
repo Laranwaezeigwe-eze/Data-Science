@@ -1,0 +1,57 @@
+---
+title: "Linear Regression"
+author: "Lara"
+date: "7/30/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+summary(cars)
+```
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+```{r}
+dt<-read.csv("Gym.csv", header = T)
+dt
+```
+```{r}
+library(ggplot2) 
+p1<-ggplot(dt, aes(x=Age, y=Income)) + geom_point()+
+  labs(title = "Relationship between Income and Age",
+       x = "Age of Customers", y ="Income of Customers")
+p1
+```
+```{r}
+m1<-lm(Income~Age, data = dt)
+summary(m1)
+```
+```{r}
+m2<-lm(Income ~ Age + Education, data = dt)
+summary(m2)
+```
+```{r}
+new_data<-data.frame(Age =c(50), Education =c(15))
+new_data
+predict(m2, newdata= new_data, interval = 'prediction')
+
+```
+```{r}
+dt<-read.csv("Dataset.csv", header = T)
+dt
+m1<-lm(api00~acs_k3, data = dt)
+summary(m1)
+m3<-lm(api00~meals, data = dt)
+summary(m3)
+m4<-lm(api00~ full, data = dt)
+summary(m4)
+m5<-lm(api00~acs_k3+meals+full, data = dt)
+summary(m5)
+
+```
