@@ -1,0 +1,94 @@
+---
+title: "Exploratorative Data Analysis"
+author: "Lara"
+date: "8/23/2021"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+```{r}
+gy<-read.csv("Gym.csv",header=T,stringsAsFactors = TRUE)
+glimpse(gy)
+```
+```{r}
+graph<-ggplot(gy,aes(x=Product,fill=Product))+ geom_bar()+
+  labs(x="Product",y="Frequency",
+title="Distribution of products")+
+  geom_text(stat='count', aes(label=..count..), vjust=-0.2)
+graph
+
+graph<-ggplot(gy,aes(x=Gender,fill=Gender))+ geom_bar()+
+  labs(x="Gender",y="Frequency",
+title="Distribution of Gender")+
+  geom_text(stat='count', aes(label=..count..), vjust=-0.2)
+graph
+
+graph<-ggplot(gy,aes(x=MaritalStatus,fill=MaritalStatus))+ geom_bar()+
+  labs(x="Marital Status",y="Frequency",
+title="Distribution of Marital Status")+
+  geom_text(stat='count', aes(label=..count..), vjust=-0.2)
+graph
+
+library(gridExtra)
+library(scales)
+
+p1<-ggplot(gy, aes(x=Income))+
+  geom_histogram(color="black",fill="gray")+
+  scale_x_continuous(labels =comma)+
+  labs(title = "Histogram of Income",
+       x="Income", y="Frequency")+theme_bw()
+p1
+
+p2<-ggplot(gy, aes(x=Income))+
+  geom_boxplot(color="black",fill="gray")+
+  scale_x_continuous(labels =comma)+
+  labs(title = "Boxplot of Income", x ="Income")
+p2
+
+p3<-ggplot(gy, aes(x=Education))+
+  geom_histogram(color="black",fill="gray")+
+  scale_x_continuous(labels =comma)+
+  labs(title = "Histogram of Education", x ="Education", y="Frequency")
+p3
+
+p4<-ggplot(gy, aes(x=Education))+
+  geom_boxplot(color="black",fill="gray")+
+  scale_x_continuous(labels =comma)+
+  labs(title = "Boxplot of Education", x ="Education")
+p4
+
+
+p5<-ggplot(gy, aes(x=Age))+
+  geom_boxplot(color="black",fill="gray")+
+  scale_x_continuous(labels =comma)+
+  labs(title = "Boxplot of Age", x ="Age")
+p5
+
+p6<-ggplot(gy, aes(x=Age))+
+  geom_histogram(color="black",fill="gray")+
+  scale_x_continuous(labels =comma)+
+  labs(title = "Histogram of Age", x ="Age", y="Frequency")
+p6
+
+```
+```{r}
+dt<-read.csv("recruitment.csv", header=T)
+str(dt)
+mod1<-glm(Status~Gender+read+math,data = dt,
+
+family = binomial)
+
+m_out <- data.frame(summary(mod1)$coeff)
+m_out[, 4]=format.pval(m_out[ , 4], eps = .001, digits = 2)
+m_out
+data<-data.frame(Gender=c(1,0), math=c(60,60),
+
+read=c(60,60))
+
+pred<-predict(mod1, newdata = data, type = "response")
+predicted<- ifelse(pred > 0.5, "Hired", "Not Hired")
+predicted
+
+```
